@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Regression_Suite">
+    <listeners>
+        <listener class-name="Listener.AllureScreenShot"/>
+    </listeners>
+    <test verbose="2"  name="DemoBlaze_WebApp_Automation">
+        <classes>
+            <class name="Tests.LoginTest">
+                <methods>
+                    <include name="VerifyLoginWithWelcomeText"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
