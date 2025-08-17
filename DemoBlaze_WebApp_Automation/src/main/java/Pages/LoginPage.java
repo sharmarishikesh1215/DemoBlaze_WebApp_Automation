@@ -1,6 +1,7 @@
 package Pages;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -51,13 +52,23 @@ public class LoginPage {
     }
 
     @Step("Verifying if login is successfully completed")
-    public boolean VerifySuccessfulLogin() {
-        try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(WelcomeText));
-            return true;
-        } catch (Exception e) {
-            logger.error("Failed to verify successful login: {}", e.getMessage(), e);
-            return false;
-        }
+    public void NativeLogin(String userName, String password) {
+        clickOnLoginLink();
+        EnterEmail(userName);
+        EnterPassword(password);
+        ClickOnLoginButton();
+    }
+
+    @Step("Verify if welcome text is present")
+    public boolean IsWelcomeTextPresent() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(WelcomeText));
+        return driver.findElement(WelcomeText).isDisplayed();
+    }
+
+    @Step("Verify JS alert on wrong credentials")
+    public boolean WrongPasswordAlert() {
+        wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = driver.switchTo().alert();
+        return alert.getText().equals("Wrong password.");
     }
 }

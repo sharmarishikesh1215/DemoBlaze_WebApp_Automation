@@ -3,6 +3,8 @@ package Tests;
 import Base.BaseClass;
 import Pages.LoginPage;
 import io.qameta.allure.*;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -28,12 +30,19 @@ public class LoginTest extends BaseClass {
     @Story("Successful Login Scenario")
     @Severity(SeverityLevel.CRITICAL)
     @Test(description = "Test: Login successfully using valid credentials and verify Welcome Text")
-    public void VerifyLoginWithWelcomeText() {
-        loginPage.clickOnLoginLink();
-        loginPage.EnterEmail(UserName);
-        loginPage.EnterPassword(Password);
-        loginPage.ClickOnLoginButton();
-        if (!loginPage.VerifySuccessfulLogin())
+    public void VerifyLoginWithValidCredentials() {
+        loginPage.NativeLogin(UserName, Password);
+        if (!loginPage.IsWelcomeTextPresent())
             Assert.fail("Dashboard Landing failed!");
+    }
+
+    @Epic("Login Module")
+    @Feature("Positive Flow")
+    @Story("Unsuccessful Login Scenario")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "Test: Login successfully using valid credentials and verify Welcome Text")
+    public void VerifyLoginWithInvalidCredentials() {
+        loginPage.NativeLogin(UserName, "Password");
+        if(!loginPage.WrongPasswordAlert()) Assert.fail();
     }
 }
